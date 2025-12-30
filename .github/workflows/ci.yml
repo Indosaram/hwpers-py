@@ -26,7 +26,8 @@ jobs:
       - name: Build and install
         run: |
           pip install maturin
-          maturin develop
+          maturin build --release --out dist
+          pip install dist/*.whl
 
       - name: Test import
         run: python -c "import hwpers; print(f'hwpers {hwpers.__version__} loaded with {len(hwpers.__all__)} exports')"

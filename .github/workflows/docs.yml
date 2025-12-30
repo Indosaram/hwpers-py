@@ -1,13 +1,6 @@
 name: Deploy Docs
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'python/hwpers/**'
-      - 'src/**'
-      - 'docs-src/**'
-      - 'README.md'
   workflow_dispatch:
 
 permissions:
@@ -35,7 +28,8 @@ jobs:
       - name: Build and install
         run: |
           pip install maturin pdoc
-          maturin develop
+          maturin build --release --out dist
+          pip install dist/*.whl
 
       - name: Sync README to docstring
         run: python docs-src/sync_docs.py

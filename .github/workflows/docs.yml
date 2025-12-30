@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
@@ -29,7 +29,7 @@ jobs:
         run: |
           pip install maturin pdoc
           maturin build --release --out dist
-          pip install dist/*.whl
+          pip install --find-links dist hwpers
 
       - name: Sync README to docstring
         run: python docs-src/sync_docs.py

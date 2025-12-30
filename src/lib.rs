@@ -1,5 +1,5 @@
-use pyo3::prelude::*;
 use pyo3::exceptions::PyIOError;
+use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 use std::path::PathBuf;
 
@@ -219,10 +219,18 @@ impl From<PyPageNumberFormat> for hwpers::model::header_footer::PageNumberFormat
     fn from(val: PyPageNumberFormat) -> Self {
         match val {
             PyPageNumberFormat::Numeric => hwpers::model::header_footer::PageNumberFormat::Numeric,
-            PyPageNumberFormat::RomanLower => hwpers::model::header_footer::PageNumberFormat::RomanLower,
-            PyPageNumberFormat::RomanUpper => hwpers::model::header_footer::PageNumberFormat::RomanUpper,
-            PyPageNumberFormat::AlphaLower => hwpers::model::header_footer::PageNumberFormat::AlphaLower,
-            PyPageNumberFormat::AlphaUpper => hwpers::model::header_footer::PageNumberFormat::AlphaUpper,
+            PyPageNumberFormat::RomanLower => {
+                hwpers::model::header_footer::PageNumberFormat::RomanLower
+            }
+            PyPageNumberFormat::RomanUpper => {
+                hwpers::model::header_footer::PageNumberFormat::RomanUpper
+            }
+            PyPageNumberFormat::AlphaLower => {
+                hwpers::model::header_footer::PageNumberFormat::AlphaLower
+            }
+            PyPageNumberFormat::AlphaUpper => {
+                hwpers::model::header_footer::PageNumberFormat::AlphaUpper
+            }
         }
     }
 }
@@ -302,9 +310,15 @@ pub enum PyHeaderFooterAlignment {
 impl From<PyHeaderFooterAlignment> for hwpers::model::header_footer::HeaderFooterAlignment {
     fn from(val: PyHeaderFooterAlignment) -> Self {
         match val {
-            PyHeaderFooterAlignment::Left => hwpers::model::header_footer::HeaderFooterAlignment::Left,
-            PyHeaderFooterAlignment::Center => hwpers::model::header_footer::HeaderFooterAlignment::Center,
-            PyHeaderFooterAlignment::Right => hwpers::model::header_footer::HeaderFooterAlignment::Right,
+            PyHeaderFooterAlignment::Left => {
+                hwpers::model::header_footer::HeaderFooterAlignment::Left
+            }
+            PyHeaderFooterAlignment::Center => {
+                hwpers::model::header_footer::HeaderFooterAlignment::Center
+            }
+            PyHeaderFooterAlignment::Right => {
+                hwpers::model::header_footer::HeaderFooterAlignment::Right
+            }
         }
     }
 }
@@ -389,44 +403,64 @@ pub struct PyTextStyle {
 impl PyTextStyle {
     #[new]
     fn new() -> Self {
-        PyTextStyle { inner: hwpers::style::TextStyle::new() }
+        PyTextStyle {
+            inner: hwpers::style::TextStyle::new(),
+        }
     }
 
     fn font(&self, font_name: &str) -> Self {
-        PyTextStyle { inner: self.inner.clone().font(font_name) }
+        PyTextStyle {
+            inner: self.inner.clone().font(font_name),
+        }
     }
 
     fn size(&self, size_pt: u32) -> Self {
-        PyTextStyle { inner: self.inner.clone().size(size_pt) }
+        PyTextStyle {
+            inner: self.inner.clone().size(size_pt),
+        }
     }
 
     fn bold(&self) -> Self {
-        PyTextStyle { inner: self.inner.clone().bold() }
+        PyTextStyle {
+            inner: self.inner.clone().bold(),
+        }
     }
 
     fn italic(&self) -> Self {
-        PyTextStyle { inner: self.inner.clone().italic() }
+        PyTextStyle {
+            inner: self.inner.clone().italic(),
+        }
     }
 
     fn underline(&self) -> Self {
-        PyTextStyle { inner: self.inner.clone().underline() }
+        PyTextStyle {
+            inner: self.inner.clone().underline(),
+        }
     }
 
     fn strikethrough(&self) -> Self {
-        PyTextStyle { inner: self.inner.clone().strikethrough() }
+        PyTextStyle {
+            inner: self.inner.clone().strikethrough(),
+        }
     }
 
     fn color(&self, color: u32) -> Self {
-        PyTextStyle { inner: self.inner.clone().color(color) }
+        PyTextStyle {
+            inner: self.inner.clone().color(color),
+        }
     }
 
     fn background(&self, color: u32) -> Self {
-        PyTextStyle { inner: self.inner.clone().background(color) }
+        PyTextStyle {
+            inner: self.inner.clone().background(color),
+        }
     }
 
     fn __repr__(&self) -> String {
-        format!("TextStyle(bold={}, italic={}, underline={})",
-            self.inner.bold, self.inner.italic, self.inner.underline)
+        format!(
+            "TextStyle(bold={}, italic={}, underline={})",
+            self.inner.bold, self.inner.italic, self.inner.underline
+        )
     }
 }
 
@@ -442,29 +476,43 @@ impl PyBorderLineStyle {
     #[new]
     #[pyo3(signature = (line_type=None, thickness=None, color=None))]
     fn new(line_type: Option<PyBorderLineType>, thickness: Option<u8>, color: Option<u32>) -> Self {
-        let lt = line_type.map(|t| t.into()).unwrap_or(hwpers::style::BorderLineType::Solid);
+        let lt = line_type
+            .map(|t| t.into())
+            .unwrap_or(hwpers::style::BorderLineType::Solid);
         PyBorderLineStyle {
-            inner: hwpers::style::BorderLineStyle::new(lt, thickness.unwrap_or(1), color.unwrap_or(0x000000)),
+            inner: hwpers::style::BorderLineStyle::new(
+                lt,
+                thickness.unwrap_or(1),
+                color.unwrap_or(0x000000),
+            ),
         }
     }
 
     #[staticmethod]
     fn none() -> Self {
-        PyBorderLineStyle { inner: hwpers::style::BorderLineStyle::none() }
+        PyBorderLineStyle {
+            inner: hwpers::style::BorderLineStyle::none(),
+        }
     }
 
     #[staticmethod]
     fn solid(thickness: u8) -> Self {
-        PyBorderLineStyle { inner: hwpers::style::BorderLineStyle::solid(thickness) }
+        PyBorderLineStyle {
+            inner: hwpers::style::BorderLineStyle::solid(thickness),
+        }
     }
 
     #[staticmethod]
     fn dashed(thickness: u8) -> Self {
-        PyBorderLineStyle { inner: hwpers::style::BorderLineStyle::dashed(thickness) }
+        PyBorderLineStyle {
+            inner: hwpers::style::BorderLineStyle::dashed(thickness),
+        }
     }
 
     fn with_color(&self, color: u32) -> Self {
-        PyBorderLineStyle { inner: self.inner.clone().with_color(color) }
+        PyBorderLineStyle {
+            inner: self.inner.clone().with_color(color),
+        }
     }
 }
 
@@ -479,38 +527,54 @@ pub struct PyCellBorderStyle {
 impl PyCellBorderStyle {
     #[new]
     fn new() -> Self {
-        PyCellBorderStyle { inner: hwpers::style::CellBorderStyle::new() }
+        PyCellBorderStyle {
+            inner: hwpers::style::CellBorderStyle::new(),
+        }
     }
 
     #[staticmethod]
     fn all_borders(style: PyBorderLineStyle) -> Self {
-        PyCellBorderStyle { inner: hwpers::style::CellBorderStyle::all_borders(style.inner) }
+        PyCellBorderStyle {
+            inner: hwpers::style::CellBorderStyle::all_borders(style.inner),
+        }
     }
 
     #[staticmethod]
     fn no_borders() -> Self {
-        PyCellBorderStyle { inner: hwpers::style::CellBorderStyle::no_borders() }
+        PyCellBorderStyle {
+            inner: hwpers::style::CellBorderStyle::no_borders(),
+        }
     }
 
     #[staticmethod]
     fn outer_borders() -> Self {
-        PyCellBorderStyle { inner: hwpers::style::CellBorderStyle::outer_borders() }
+        PyCellBorderStyle {
+            inner: hwpers::style::CellBorderStyle::outer_borders(),
+        }
     }
 
     fn set_left(&self, style: PyBorderLineStyle) -> Self {
-        PyCellBorderStyle { inner: self.inner.clone().set_left(style.inner) }
+        PyCellBorderStyle {
+            inner: self.inner.clone().set_left(style.inner),
+        }
     }
 
     fn set_right(&self, style: PyBorderLineStyle) -> Self {
-        PyCellBorderStyle { inner: self.inner.clone().set_right(style.inner) }
+        PyCellBorderStyle {
+            inner: self.inner.clone().set_right(style.inner),
+        }
     }
 
     fn set_top(&self, style: PyBorderLineStyle) -> Self {
-        PyCellBorderStyle { inner: self.inner.clone().set_top(style.inner) }
+        PyCellBorderStyle {
+            inner: self.inner.clone().set_top(style.inner),
+        }
     }
 
     fn set_bottom(&self, style: PyBorderLineStyle) -> Self {
-        PyCellBorderStyle { inner: self.inner.clone().set_bottom(style.inner) }
+        PyCellBorderStyle {
+            inner: self.inner.clone().set_bottom(style.inner),
+        }
     }
 }
 
@@ -525,27 +589,39 @@ pub struct PyImageOptions {
 impl PyImageOptions {
     #[new]
     fn new() -> Self {
-        PyImageOptions { inner: hwpers::style::ImageOptions::new() }
+        PyImageOptions {
+            inner: hwpers::style::ImageOptions::new(),
+        }
     }
 
     fn width(&self, width_mm: u32) -> Self {
-        PyImageOptions { inner: self.inner.clone().width(width_mm) }
+        PyImageOptions {
+            inner: self.inner.clone().width(width_mm),
+        }
     }
 
     fn height(&self, height_mm: u32) -> Self {
-        PyImageOptions { inner: self.inner.clone().height(height_mm) }
+        PyImageOptions {
+            inner: self.inner.clone().height(height_mm),
+        }
     }
 
     fn align(&self, alignment: PyImageAlign) -> Self {
-        PyImageOptions { inner: self.inner.clone().align(alignment.into()) }
+        PyImageOptions {
+            inner: self.inner.clone().align(alignment.into()),
+        }
     }
 
     fn wrap_text(&self, wrap: bool) -> Self {
-        PyImageOptions { inner: self.inner.clone().wrap_text(wrap) }
+        PyImageOptions {
+            inner: self.inner.clone().wrap_text(wrap),
+        }
     }
 
     fn caption(&self, text: &str) -> Self {
-        PyImageOptions { inner: self.inner.clone().caption(text) }
+        PyImageOptions {
+            inner: self.inner.clone().caption(text),
+        }
     }
 }
 
@@ -560,19 +636,30 @@ pub struct PyStyledText {
 impl PyStyledText {
     #[new]
     fn new(text: String) -> Self {
-        PyStyledText { inner: hwpers::style::StyledText::new(text) }
+        PyStyledText {
+            inner: hwpers::style::StyledText::new(text),
+        }
     }
 
     fn add_range(&self, start: usize, end: usize, style: PyTextStyle) -> Self {
-        PyStyledText { inner: self.inner.clone().add_range(start, end, style.inner) }
+        PyStyledText {
+            inner: self.inner.clone().add_range(start, end, style.inner),
+        }
     }
 
     fn style_substring(&self, substring: &str, style: PyTextStyle) -> Self {
-        PyStyledText { inner: self.inner.clone().style_substring(substring, style.inner) }
+        PyStyledText {
+            inner: self.inner.clone().style_substring(substring, style.inner),
+        }
     }
 
     fn style_all_occurrences(&self, substring: &str, style: PyTextStyle) -> Self {
-        PyStyledText { inner: self.inner.clone().style_all_occurrences(substring, style.inner) }
+        PyStyledText {
+            inner: self
+                .inner
+                .clone()
+                .style_all_occurrences(substring, style.inner),
+        }
     }
 
     #[getter]
@@ -595,7 +682,11 @@ impl PyHyperlinkStyle {
     #[new]
     #[pyo3(signature = (text_color=0x0000FF, underline=true, new_window=false))]
     fn new(text_color: u32, underline: bool, new_window: bool) -> Self {
-        PyHyperlinkStyle { text_color, underline, new_window }
+        PyHyperlinkStyle {
+            text_color,
+            underline,
+            new_window,
+        }
     }
 
     #[getter]
@@ -634,6 +725,7 @@ pub struct PyHyperlink {
 #[pymethods]
 impl PyHyperlink {
     #[new]
+    #[allow(clippy::too_many_arguments)]
     #[pyo3(signature = (display_text, target_url, hyperlink_type=None, tooltip=None, display_mode=None, text_color=None, underline=None, new_window=None))]
     fn new(
         display_text: String,
@@ -645,43 +737,46 @@ impl PyHyperlink {
         underline: Option<bool>,
         new_window: Option<bool>,
     ) -> Self {
-        let mut hl = hwpers::model::Hyperlink::default();
-        hl.display_text = display_text;
-        hl.target_url = target_url;
-        if let Some(ht) = hyperlink_type {
-            hl.hyperlink_type = ht.into();
-        }
-        hl.tooltip = tooltip;
-        if let Some(dm) = display_mode {
-            hl.display_mode = dm.into();
-        }
-        if let Some(c) = text_color {
-            hl.text_color = c;
-        }
-        if let Some(u) = underline {
-            hl.underline = u;
-        }
-        if let Some(nw) = new_window {
-            hl.open_in_new_window = nw;
-        }
+        let default = hwpers::model::Hyperlink::default();
+        let hl = hwpers::model::Hyperlink {
+            display_text,
+            target_url,
+            hyperlink_type: hyperlink_type
+                .map(|ht| ht.into())
+                .unwrap_or(default.hyperlink_type),
+            tooltip,
+            display_mode: display_mode
+                .map(|dm| dm.into())
+                .unwrap_or(default.display_mode),
+            text_color: text_color.unwrap_or(default.text_color),
+            underline: underline.unwrap_or(default.underline),
+            open_in_new_window: new_window.unwrap_or(default.open_in_new_window),
+            ..default
+        };
         PyHyperlink { inner: hl }
     }
 
     #[staticmethod]
     fn url(display_text: &str, url: &str) -> Self {
-        let mut hl = hwpers::model::Hyperlink::default();
-        hl.display_text = display_text.to_string();
-        hl.target_url = url.to_string();
-        hl.hyperlink_type = hwpers::model::HyperlinkType::Url;
+        let default = hwpers::model::Hyperlink::default();
+        let hl = hwpers::model::Hyperlink {
+            display_text: display_text.to_string(),
+            target_url: url.to_string(),
+            hyperlink_type: hwpers::model::HyperlinkType::Url,
+            ..default
+        };
         PyHyperlink { inner: hl }
     }
 
     #[staticmethod]
     fn email(display_text: &str, email: &str) -> Self {
-        let mut hl = hwpers::model::Hyperlink::default();
-        hl.display_text = display_text.to_string();
-        hl.target_url = format!("mailto:{}", email);
-        hl.hyperlink_type = hwpers::model::HyperlinkType::Email;
+        let default = hwpers::model::Hyperlink::default();
+        let hl = hwpers::model::Hyperlink {
+            display_text: display_text.to_string(),
+            target_url: format!("mailto:{}", email),
+            hyperlink_type: hwpers::model::HyperlinkType::Email,
+            ..default
+        };
         PyHyperlink { inner: hl }
     }
 
@@ -743,8 +838,18 @@ pub struct PyCustomTextBoxStyle {
 impl PyCustomTextBoxStyle {
     #[new]
     #[pyo3(signature = (alignment=PyTextBoxAlignment::Inline, border_style=PyTextBoxBorderStyle::Solid, border_color=0x000000, background_color=0xFFFFFF))]
-    fn new(alignment: PyTextBoxAlignment, border_style: PyTextBoxBorderStyle, border_color: u32, background_color: u32) -> Self {
-        PyCustomTextBoxStyle { alignment, border_style, border_color, background_color }
+    fn new(
+        alignment: PyTextBoxAlignment,
+        border_style: PyTextBoxBorderStyle,
+        border_color: u32,
+        background_color: u32,
+    ) -> Self {
+        PyCustomTextBoxStyle {
+            alignment,
+            border_style,
+            border_color,
+            background_color,
+        }
     }
 
     #[getter]
@@ -790,7 +895,9 @@ pub struct PyHeadingStyle {
 impl PyHeadingStyle {
     #[staticmethod]
     fn for_level(level: u8) -> Self {
-        PyHeadingStyle { inner: hwpers::style::HeadingStyle::for_level(level) }
+        PyHeadingStyle {
+            inner: hwpers::style::HeadingStyle::for_level(level),
+        }
     }
 
     #[getter]
@@ -831,14 +938,13 @@ impl PyListStyle {
     #[new]
     #[pyo3(signature = (list_type=PyListType::Bullet, indent=None, spacing=None))]
     fn new(list_type: PyListType, indent: Option<i32>, spacing: Option<i32>) -> Self {
-        let mut style = hwpers::style::ListStyle::default();
-        style.list_type = list_type.into();
-        if let Some(i) = indent {
-            style.indent = i;
-        }
-        if let Some(s) = spacing {
-            style.spacing = s;
-        }
+        let default = hwpers::style::ListStyle::default();
+        let style = hwpers::style::ListStyle {
+            list_type: list_type.into(),
+            indent: indent.unwrap_or(default.indent),
+            spacing: spacing.unwrap_or(default.spacing),
+            ..default
+        };
         PyListStyle { inner: style }
     }
 
@@ -864,7 +970,9 @@ pub struct PyTableStyle {
 impl PyTableStyle {
     #[new]
     fn new() -> Self {
-        PyTableStyle { inner: hwpers::style::TableStyle::default() }
+        PyTableStyle {
+            inner: hwpers::style::TableStyle::default(),
+        }
     }
 
     #[getter]
@@ -899,12 +1007,16 @@ pub struct PyTextRange {
 impl PyTextRange {
     #[new]
     fn new(start: usize, end: usize, style: PyTextStyle) -> Self {
-        PyTextRange { inner: hwpers::style::TextRange::new(start, end, style.inner) }
+        PyTextRange {
+            inner: hwpers::style::TextRange::new(start, end, style.inner),
+        }
     }
 
     #[staticmethod]
     fn entire_text(text_len: usize, style: PyTextStyle) -> Self {
-        PyTextRange { inner: hwpers::style::TextRange::entire_text(text_len, style.inner) }
+        PyTextRange {
+            inner: hwpers::style::TextRange::entire_text(text_len, style.inner),
+        }
     }
 
     #[getter]
@@ -929,44 +1041,62 @@ pub struct PyPageMargins {
 impl PyPageMargins {
     #[new]
     fn new() -> Self {
-        PyPageMargins { inner: hwpers::model::page_layout::PageMargins::default() }
+        PyPageMargins {
+            inner: hwpers::model::page_layout::PageMargins::default(),
+        }
     }
 
     #[staticmethod]
     fn new_mm(left: f32, right: f32, top: f32, bottom: f32) -> Self {
-        PyPageMargins { inner: hwpers::model::page_layout::PageMargins::new_mm(left, right, top, bottom) }
+        PyPageMargins {
+            inner: hwpers::model::page_layout::PageMargins::new_mm(left, right, top, bottom),
+        }
     }
 
     #[staticmethod]
     fn new_inches(left: f32, right: f32, top: f32, bottom: f32) -> Self {
-        PyPageMargins { inner: hwpers::model::page_layout::PageMargins::new_inches(left, right, top, bottom) }
+        PyPageMargins {
+            inner: hwpers::model::page_layout::PageMargins::new_inches(left, right, top, bottom),
+        }
     }
 
     #[staticmethod]
     fn narrow() -> Self {
-        PyPageMargins { inner: hwpers::model::page_layout::PageMargins::narrow() }
+        PyPageMargins {
+            inner: hwpers::model::page_layout::PageMargins::narrow(),
+        }
     }
 
     #[staticmethod]
     fn normal() -> Self {
-        PyPageMargins { inner: hwpers::model::page_layout::PageMargins::normal() }
+        PyPageMargins {
+            inner: hwpers::model::page_layout::PageMargins::normal(),
+        }
     }
 
     #[staticmethod]
     fn wide() -> Self {
-        PyPageMargins { inner: hwpers::model::page_layout::PageMargins::wide() }
+        PyPageMargins {
+            inner: hwpers::model::page_layout::PageMargins::wide(),
+        }
     }
 
     fn with_header_footer_mm(&self, header: f32, footer: f32) -> Self {
-        PyPageMargins { inner: self.inner.clone().with_header_footer_mm(header, footer) }
+        PyPageMargins {
+            inner: self.inner.clone().with_header_footer_mm(header, footer),
+        }
     }
 
     fn with_gutter_mm(&self, gutter: f32) -> Self {
-        PyPageMargins { inner: self.inner.clone().with_gutter_mm(gutter) }
+        PyPageMargins {
+            inner: self.inner.clone().with_gutter_mm(gutter),
+        }
     }
 
     fn with_mirror_margins(&self, mirror: bool) -> Self {
-        PyPageMargins { inner: self.inner.clone().with_mirror_margins(mirror) }
+        PyPageMargins {
+            inner: self.inner.clone().with_mirror_margins(mirror),
+        }
     }
 }
 
@@ -982,55 +1112,80 @@ impl PyPageLayout {
     #[new]
     fn new(paper_size: PyPaperSize, orientation: PyPageOrientation) -> Self {
         PyPageLayout {
-            inner: hwpers::model::page_layout::PageLayout::new(paper_size.into(), orientation.into()),
+            inner: hwpers::model::page_layout::PageLayout::new(
+                paper_size.into(),
+                orientation.into(),
+            ),
         }
     }
 
     #[staticmethod]
     fn a4_portrait() -> Self {
-        PyPageLayout { inner: hwpers::model::page_layout::PageLayout::a4_portrait() }
+        PyPageLayout {
+            inner: hwpers::model::page_layout::PageLayout::a4_portrait(),
+        }
     }
 
     #[staticmethod]
     fn a4_landscape() -> Self {
-        PyPageLayout { inner: hwpers::model::page_layout::PageLayout::a4_landscape() }
+        PyPageLayout {
+            inner: hwpers::model::page_layout::PageLayout::a4_landscape(),
+        }
     }
 
     #[staticmethod]
     fn letter_portrait() -> Self {
-        PyPageLayout { inner: hwpers::model::page_layout::PageLayout::letter_portrait() }
+        PyPageLayout {
+            inner: hwpers::model::page_layout::PageLayout::letter_portrait(),
+        }
     }
 
     #[staticmethod]
     fn letter_landscape() -> Self {
-        PyPageLayout { inner: hwpers::model::page_layout::PageLayout::letter_landscape() }
+        PyPageLayout {
+            inner: hwpers::model::page_layout::PageLayout::letter_landscape(),
+        }
     }
 
     #[staticmethod]
     fn custom_mm(width_mm: f32, height_mm: f32, orientation: PyPageOrientation) -> Self {
         PyPageLayout {
-            inner: hwpers::model::page_layout::PageLayout::custom_mm(width_mm, height_mm, orientation.into()),
+            inner: hwpers::model::page_layout::PageLayout::custom_mm(
+                width_mm,
+                height_mm,
+                orientation.into(),
+            ),
         }
     }
 
     fn with_margins(&self, margins: PyPageMargins) -> Self {
-        PyPageLayout { inner: self.inner.clone().with_margins(margins.inner) }
+        PyPageLayout {
+            inner: self.inner.clone().with_margins(margins.inner),
+        }
     }
 
     fn with_columns(&self, columns: u16, spacing_mm: f32) -> Self {
-        PyPageLayout { inner: self.inner.clone().with_columns(columns, spacing_mm) }
+        PyPageLayout {
+            inner: self.inner.clone().with_columns(columns, spacing_mm),
+        }
     }
 
     fn with_column_line(&self, show_line: bool) -> Self {
-        PyPageLayout { inner: self.inner.clone().with_column_line(show_line) }
+        PyPageLayout {
+            inner: self.inner.clone().with_column_line(show_line),
+        }
     }
 
     fn with_background_color(&self, color: u32) -> Self {
-        PyPageLayout { inner: self.inner.clone().with_background_color(color) }
+        PyPageLayout {
+            inner: self.inner.clone().with_background_color(color),
+        }
     }
 
     fn with_page_numbering(&self, start: u16, format: PyPageNumberFormat) -> Self {
-        PyPageLayout { inner: self.inner.clone().with_page_numbering(start, format.into()) }
+        PyPageLayout {
+            inner: self.inner.clone().with_page_numbering(start, format.into()),
+        }
     }
 
     #[getter]
@@ -1123,7 +1278,13 @@ impl PyTableBuilder {
         }
     }
 
-    fn merge_cells(&mut self, start_row: u32, start_col: u32, end_row: u32, end_col: u32) -> PyTableBuilder {
+    fn merge_cells(
+        &mut self,
+        start_row: u32,
+        start_col: u32,
+        end_row: u32,
+        end_col: u32,
+    ) -> PyTableBuilder {
         let mut merges = self.merges.clone();
         merges.push((start_row, start_col, end_row, end_col));
         PyTableBuilder {
@@ -1209,7 +1370,7 @@ impl PyRenderOptions {
                 scale,
                 show_margins,
                 show_baselines,
-            }
+            },
         }
     }
 
@@ -1311,19 +1472,29 @@ impl PyHwpDocument {
     }
 
     fn get_title(&self) -> Option<String> {
-        self.inner.get_properties().and_then(|p| p.document_title.clone())
+        self.inner
+            .get_properties()
+            .and_then(|p| p.document_title.clone())
     }
 
     fn get_author(&self) -> Option<String> {
-        self.inner.get_properties().and_then(|p| p.document_author.clone())
+        self.inner
+            .get_properties()
+            .and_then(|p| p.document_author.clone())
     }
 
     fn get_character_count(&self) -> u32 {
-        self.inner.get_properties().map(|p| p.total_character_count).unwrap_or(0)
+        self.inner
+            .get_properties()
+            .map(|p| p.total_character_count)
+            .unwrap_or(0)
     }
 
     fn get_page_count(&self) -> u32 {
-        self.inner.get_properties().map(|p| p.total_page_count).unwrap_or(0)
+        self.inner
+            .get_properties()
+            .map(|p| p.total_page_count)
+            .unwrap_or(0)
     }
 
     fn is_compressed(&self) -> bool {
@@ -1366,7 +1537,11 @@ impl PyHwpDocument {
     /// Convert a page to SVG directly
     /// Note: This may fail on documents created with HwpWriter.
     #[pyo3(signature = (page_index=0, options=None))]
-    fn to_svg(&self, page_index: usize, options: Option<PyRenderOptions>) -> PyResult<Option<String>> {
+    fn to_svg(
+        &self,
+        page_index: usize,
+        options: Option<PyRenderOptions>,
+    ) -> PyResult<Option<String>> {
         let opts = options.map(|o| o.inner).unwrap_or_default();
 
         let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
@@ -1377,14 +1552,18 @@ impl PyHwpDocument {
 
         match result {
             Ok(svg) => Ok(svg),
-            Err(_) => {
-                Err(PyIOError::new_err("Render failed: document may lack required page definitions."))
-            }
+            Err(_) => Err(PyIOError::new_err(
+                "Render failed: document may lack required page definitions.",
+            )),
         }
     }
 
     fn __repr__(&self) -> String {
-        format!("HwpDocument(sections={}, chars={})", self.section_count(), self.get_character_count())
+        format!(
+            "HwpDocument(sections={}, chars={})",
+            self.section_count(),
+            self.get_character_count()
+        )
     }
 }
 
@@ -1401,7 +1580,9 @@ pub struct PyHwpWriter {
 impl PyHwpWriter {
     #[new]
     fn new() -> Self {
-        PyHwpWriter { inner: hwpers::HwpWriter::new() }
+        PyHwpWriter {
+            inner: hwpers::HwpWriter::new(),
+        }
     }
 
     // Note: from_document() is not exposed because HwpDocument doesn't implement Clone
@@ -1410,71 +1591,135 @@ impl PyHwpWriter {
     // === Paragraph Methods ===
 
     fn add_paragraph(&mut self, text: &str) -> PyResult<()> {
-        self.inner.add_paragraph(text).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_paragraph(text)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_paragraph_with_style(&mut self, text: &str, style: &PyTextStyle) -> PyResult<()> {
-        self.inner.add_paragraph_with_style(text, &style.inner).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_paragraph_with_style(text, &style.inner)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_styled_paragraph(&mut self, styled_text: &PyStyledText) -> PyResult<()> {
-        self.inner.add_styled_paragraph(&styled_text.inner).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_styled_paragraph(&styled_text.inner)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_aligned_paragraph(&mut self, text: &str, alignment: PyParagraphAlignment) -> PyResult<()> {
-        self.inner.add_aligned_paragraph(text, alignment.into()).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_aligned_paragraph(
+        &mut self,
+        text: &str,
+        alignment: PyParagraphAlignment,
+    ) -> PyResult<()> {
+        self.inner
+            .add_aligned_paragraph(text, alignment.into())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_paragraph_with_spacing(&mut self, text: &str, line_spacing_percent: u32, before_mm: f32, after_mm: f32) -> PyResult<()> {
-        self.inner.add_paragraph_with_spacing(text, line_spacing_percent, before_mm, after_mm).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_paragraph_with_spacing(
+        &mut self,
+        text: &str,
+        line_spacing_percent: u32,
+        before_mm: f32,
+        after_mm: f32,
+    ) -> PyResult<()> {
+        self.inner
+            .add_paragraph_with_spacing(text, line_spacing_percent, before_mm, after_mm)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_paragraph_with_bold(&mut self, text: &str, bold_ranges: Vec<(usize, usize)>) -> PyResult<()> {
-        self.inner.add_paragraph_with_bold(text, bold_ranges).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_paragraph_with_bold(
+        &mut self,
+        text: &str,
+        bold_ranges: Vec<(usize, usize)>,
+    ) -> PyResult<()> {
+        self.inner
+            .add_paragraph_with_bold(text, bold_ranges)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_paragraph_with_colors(&mut self, text: &str, color_ranges: Vec<(usize, usize, u32)>) -> PyResult<()> {
-        self.inner.add_paragraph_with_colors(text, color_ranges).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_paragraph_with_colors(
+        &mut self,
+        text: &str,
+        color_ranges: Vec<(usize, usize, u32)>,
+    ) -> PyResult<()> {
+        self.inner
+            .add_paragraph_with_colors(text, color_ranges)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_paragraph_with_highlight(&mut self, text: &str, highlight_ranges: Vec<(usize, usize, u32)>) -> PyResult<()> {
-        self.inner.add_paragraph_with_highlight(text, highlight_ranges).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_paragraph_with_highlight(
+        &mut self,
+        text: &str,
+        highlight_ranges: Vec<(usize, usize, u32)>,
+    ) -> PyResult<()> {
+        self.inner
+            .add_paragraph_with_highlight(text, highlight_ranges)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_mixed_text(&mut self, text: &str, style_ranges: Vec<(usize, usize, PyTextStyle)>) -> PyResult<()> {
+    fn add_mixed_text(
+        &mut self,
+        text: &str,
+        style_ranges: Vec<(usize, usize, PyTextStyle)>,
+    ) -> PyResult<()> {
         let rust_ranges: Vec<(usize, usize, hwpers::style::TextStyle)> = style_ranges
             .into_iter()
             .map(|(start, end, style)| (start, end, style.inner))
             .collect();
-        self.inner.add_mixed_text(text, rust_ranges).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_mixed_text(text, rust_ranges)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_paragraph_with_hyperlinks(&mut self, text: &str, links: Vec<PyHyperlink>) -> PyResult<()> {
-        let rust_links: Vec<hwpers::model::Hyperlink> = links.into_iter().map(|l| l.inner).collect();
-        self.inner.add_paragraph_with_hyperlinks(text, rust_links).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_paragraph_with_hyperlinks(
+        &mut self,
+        text: &str,
+        links: Vec<PyHyperlink>,
+    ) -> PyResult<()> {
+        let rust_links: Vec<hwpers::model::Hyperlink> =
+            links.into_iter().map(|l| l.inner).collect();
+        self.inner
+            .add_paragraph_with_hyperlinks(text, rust_links)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     // === Heading Methods ===
 
     fn add_heading(&mut self, text: &str, level: u8) -> PyResult<()> {
-        self.inner.add_heading(text, level).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_heading(text, level)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     // === Table Methods ===
 
     fn add_table(&mut self, data: Vec<Vec<String>>) -> PyResult<()> {
-        let data_refs: Vec<Vec<&str>> = data.iter().map(|row| row.iter().map(|s| s.as_str()).collect()).collect();
-        self.inner.add_simple_table(&data_refs).map_err(|e| PyIOError::new_err(e.to_string()))
+        let data_refs: Vec<Vec<&str>> = data
+            .iter()
+            .map(|row| row.iter().map(|s| s.as_str()).collect())
+            .collect();
+        self.inner
+            .add_simple_table(&data_refs)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_simple_table(&mut self, data: Vec<Vec<String>>) -> PyResult<()> {
-        let data_refs: Vec<Vec<&str>> = data.iter().map(|row| row.iter().map(|s| s.as_str()).collect()).collect();
-        self.inner.add_simple_table(&data_refs).map_err(|e| PyIOError::new_err(e.to_string()))
+        let data_refs: Vec<Vec<&str>> = data
+            .iter()
+            .map(|row| row.iter().map(|s| s.as_str()).collect())
+            .collect();
+        self.inner
+            .add_simple_table(&data_refs)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_table_with_builder(&mut self, builder: &PyTableBuilder) -> PyResult<()> {
         // Build a 2D vector of cell data from the builder
-        let mut data: Vec<Vec<String>> = vec![vec![String::new(); builder.cols as usize]; builder.rows as usize];
+        let mut data: Vec<Vec<String>> =
+            vec![vec![String::new(); builder.cols as usize]; builder.rows as usize];
 
         for cell in &builder.cells {
             if (cell.row as usize) < data.len() && (cell.col as usize) < data[0].len() {
@@ -1482,63 +1727,92 @@ impl PyHwpWriter {
             }
         }
 
-        let data_refs: Vec<Vec<&str>> = data.iter().map(|row| row.iter().map(|s| s.as_str()).collect()).collect();
-        self.inner.add_simple_table(&data_refs).map_err(|e| PyIOError::new_err(e.to_string()))
+        let data_refs: Vec<Vec<&str>> = data
+            .iter()
+            .map(|row| row.iter().map(|s| s.as_str()).collect())
+            .collect();
+        self.inner
+            .add_simple_table(&data_refs)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     // === List Methods ===
 
     fn add_bullet_list(&mut self, items: Vec<String>) -> PyResult<()> {
         let items_refs: Vec<&str> = items.iter().map(|s| s.as_str()).collect();
-        self.inner.add_list(&items_refs, hwpers::style::ListType::Bullet).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_list(&items_refs, hwpers::style::ListType::Bullet)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_numbered_list(&mut self, items: Vec<String>) -> PyResult<()> {
         let items_refs: Vec<&str> = items.iter().map(|s| s.as_str()).collect();
-        self.inner.add_list(&items_refs, hwpers::style::ListType::Numbered).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_list(&items_refs, hwpers::style::ListType::Numbered)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_list(&mut self, items: Vec<String>, list_type: PyListType) -> PyResult<()> {
         let items_refs: Vec<&str> = items.iter().map(|s| s.as_str()).collect();
-        self.inner.add_list(&items_refs, list_type.into()).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_list(&items_refs, list_type.into())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn start_list(&mut self, list_type: PyListType) -> PyResult<()> {
-        self.inner.start_list(list_type.into()).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .start_list(list_type.into())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_list_item(&mut self, text: &str) -> PyResult<()> {
-        self.inner.add_list_item(text).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_list_item(text)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn start_nested_list(&mut self, list_type: PyListType) -> PyResult<()> {
-        self.inner.start_nested_list(list_type.into()).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .start_nested_list(list_type.into())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn end_list(&mut self) -> PyResult<()> {
-        self.inner.end_list().map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .end_list()
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     // === Hyperlink Methods ===
 
     fn add_hyperlink(&mut self, display_text: &str, url: &str) -> PyResult<()> {
-        self.inner.add_hyperlink(display_text, url).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_hyperlink(display_text, url)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_email_link(&mut self, display_text: &str, email: &str) -> PyResult<()> {
-        self.inner.add_email_link(display_text, email).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_email_link(display_text, email)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_file_link(&mut self, display_text: &str, file_path: &str) -> PyResult<()> {
-        self.inner.add_file_link(display_text, file_path).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_file_link(display_text, file_path)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_bookmark_link(&mut self, display_text: &str, bookmark_name: &str) -> PyResult<()> {
-        self.inner.add_bookmark_link(display_text, bookmark_name).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_bookmark_link(display_text, bookmark_name)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_hyperlink_with_options(&mut self, hyperlink: PyHyperlink) -> PyResult<()> {
-        self.inner.add_hyperlink_with_options(hyperlink.inner).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_hyperlink_with_options(hyperlink.inner)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_custom_hyperlink(
@@ -1547,51 +1821,97 @@ impl PyHwpWriter {
         hyperlink_type: PyHyperlinkType,
         target_url: &str,
         display_mode: PyHyperlinkDisplay,
-        style: &PyHyperlinkStyle
+        style: &PyHyperlinkStyle,
     ) -> PyResult<()> {
-        self.inner.add_custom_hyperlink(
-            display_text,
-            hyperlink_type.into(),
-            target_url,
-            display_mode.into(),
-            style.into()
-        ).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_custom_hyperlink(
+                display_text,
+                hyperlink_type.into(),
+                target_url,
+                display_mode.into(),
+                style.into(),
+            )
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     // === Image Methods ===
 
     fn add_image(&mut self, path: &str) -> PyResult<()> {
-        self.inner.add_image(path).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_image(path)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_image_from_bytes(&mut self, data: &[u8], format: PyImageFormat) -> PyResult<()> {
-        self.inner.add_image_from_bytes(data, format.into()).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_image_from_bytes(data, format.into())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_image_with_options(&mut self, data: &[u8], format: PyImageFormat, options: &PyImageOptions) -> PyResult<()> {
-        self.inner.add_image_with_options(data, format.into(), &options.inner).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_image_with_options(
+        &mut self,
+        data: &[u8],
+        format: PyImageFormat,
+        options: &PyImageOptions,
+    ) -> PyResult<()> {
+        self.inner
+            .add_image_with_options(data, format.into(), &options.inner)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     // === Text Box Methods ===
 
     fn add_text_box(&mut self, text: &str) -> PyResult<()> {
-        self.inner.add_text_box(text).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_text_box(text)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_text_box_at_position(&mut self, text: &str, x: u32, y: u32, width: u32, height: u32) -> PyResult<()> {
-        self.inner.add_text_box_at_position(text, x, y, width, height).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_text_box_at_position(
+        &mut self,
+        text: &str,
+        x: u32,
+        y: u32,
+        width: u32,
+        height: u32,
+    ) -> PyResult<()> {
+        self.inner
+            .add_text_box_at_position(text, x, y, width, height)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn add_styled_text_box(&mut self, text: &str, style: &str) -> PyResult<()> {
-        self.inner.add_styled_text_box(text, style).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .add_styled_text_box(text, style)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_floating_text_box(&mut self, text: &str, x: u32, y: u32, width: u32, height: u32, style: &PyFloatingTextBoxStyle) -> PyResult<()> {
-        self.inner.add_floating_text_box(text, x, y, width, height, style.into()).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_floating_text_box(
+        &mut self,
+        text: &str,
+        x: u32,
+        y: u32,
+        width: u32,
+        height: u32,
+        style: &PyFloatingTextBoxStyle,
+    ) -> PyResult<()> {
+        self.inner
+            .add_floating_text_box(text, x, y, width, height, style.into())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
-    fn add_custom_text_box(&mut self, text: &str, x: u32, y: u32, width: u32, height: u32, style: &PyCustomTextBoxStyle) -> PyResult<()> {
-        self.inner.add_custom_text_box(text, x, y, width, height, style.into()).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn add_custom_text_box(
+        &mut self,
+        text: &str,
+        x: u32,
+        y: u32,
+        width: u32,
+        height: u32,
+        style: &PyCustomTextBoxStyle,
+    ) -> PyResult<()> {
+        self.inner
+            .add_custom_text_box(text, x, y, width, height, style.into())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     // === Header/Footer Methods ===
@@ -1612,38 +1932,62 @@ impl PyHwpWriter {
         self.inner.add_footer_with_page_number(text, format.into());
     }
 
-    fn add_header_with_options(&mut self, text: &str, page_type: PyPageApplyType, alignment: PyHeaderFooterAlignment) {
-        self.inner.add_header_with_options(text, page_type.into(), alignment.into());
+    fn add_header_with_options(
+        &mut self,
+        text: &str,
+        page_type: PyPageApplyType,
+        alignment: PyHeaderFooterAlignment,
+    ) {
+        self.inner
+            .add_header_with_options(text, page_type.into(), alignment.into());
     }
 
-    fn add_footer_with_options(&mut self, text: &str, page_type: PyPageApplyType, alignment: PyHeaderFooterAlignment) {
-        self.inner.add_footer_with_options(text, page_type.into(), alignment.into());
+    fn add_footer_with_options(
+        &mut self,
+        text: &str,
+        page_type: PyPageApplyType,
+        alignment: PyHeaderFooterAlignment,
+    ) {
+        self.inner
+            .add_footer_with_options(text, page_type.into(), alignment.into());
     }
 
     // === Page Layout Methods ===
 
     fn set_page_layout(&mut self, layout: &PyPageLayout) -> PyResult<()> {
-        self.inner.set_page_layout(layout.inner.clone()).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .set_page_layout(layout.inner.clone())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn get_page_layout(&self) -> PyPageLayout {
-        PyPageLayout { inner: self.inner.get_page_layout() }
+        PyPageLayout {
+            inner: self.inner.get_page_layout(),
+        }
     }
 
     fn set_a4_portrait(&mut self) -> PyResult<()> {
-        self.inner.set_a4_portrait().map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .set_a4_portrait()
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn set_a4_landscape(&mut self) -> PyResult<()> {
-        self.inner.set_a4_landscape().map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .set_a4_landscape()
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn set_letter_portrait(&mut self) -> PyResult<()> {
-        self.inner.set_letter_portrait().map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .set_letter_portrait()
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn set_letter_landscape(&mut self) -> PyResult<()> {
-        self.inner.set_letter_landscape().map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .set_letter_landscape()
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn set_paper_size(&mut self, paper_size: PyPaperSize) {
@@ -1654,8 +1998,15 @@ impl PyHwpWriter {
         self.inner.set_page_orientation(orientation.into());
     }
 
-    fn set_custom_page_size(&mut self, width_mm: f32, height_mm: f32, orientation: PyPageOrientation) -> PyResult<()> {
-        self.inner.set_custom_page_size(width_mm, height_mm, orientation.into()).map_err(|e| PyIOError::new_err(e.to_string()))
+    fn set_custom_page_size(
+        &mut self,
+        width_mm: f32,
+        height_mm: f32,
+        orientation: PyPageOrientation,
+    ) -> PyResult<()> {
+        self.inner
+            .set_custom_page_size(width_mm, height_mm, orientation.into())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn set_custom_page_size_mm(&mut self, width_mm: f32, height_mm: f32) {
@@ -1691,7 +2042,9 @@ impl PyHwpWriter {
     }
 
     fn set_page_numbering(&mut self, start: u16, format: PyPageNumberFormat) -> PyResult<()> {
-        self.inner.set_page_numbering(start, format.into()).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .set_page_numbering(start, format.into())
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     // === Document Properties ===
@@ -1723,12 +2076,17 @@ impl PyHwpWriter {
     // === Output ===
 
     fn save(&self, path: &str) -> PyResult<()> {
-        self.inner.save_to_file(path).map_err(|e| PyIOError::new_err(e.to_string()))
+        self.inner
+            .save_to_file(path)
+            .map_err(|e| PyIOError::new_err(e.to_string()))
     }
 
     fn to_bytes<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyBytes>> {
-        let bytes = self.inner.to_bytes().map_err(|e| PyIOError::new_err(e.to_string()))?;
-        Ok(PyBytes::new_bound(py, &bytes))
+        let bytes = self
+            .inner
+            .to_bytes()
+            .map_err(|e| PyIOError::new_err(e.to_string()))?;
+        Ok(PyBytes::new(py, &bytes))
     }
 
     fn extract_text(&self) -> String {

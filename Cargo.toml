@@ -13,7 +13,7 @@ name = "hwpers_py"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.23", features = ["extension-module"] }
+pyo3 = { version = "0.27", features = ["extension-module"] }
 hwpers = "0.4.0"
 
 [profile.release]

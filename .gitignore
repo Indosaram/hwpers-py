@@ -28,3 +28,6 @@ docs/
 # OS
 .DS_Store
 uv.lock
+
+# auto-added: build artifacts & tooling state
+build/
